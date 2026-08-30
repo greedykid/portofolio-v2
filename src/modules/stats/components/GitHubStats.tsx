@@ -27,6 +27,13 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'repos'>('overview');
   const { user, repos, totalStars } = stats;
 
+  // API mengembalikan beberapa tahun data; grid hanya menampilkan tahun berjalan
+  const year = new Date().getFullYear();
+  const yearContributions = stats.contributions.filter((c) =>
+    c.date.startsWith(`${year}`),
+  );
+  const yearTotal = yearContributions.reduce((sum, c) => sum + c.count, 0);
+
   if (!user) {
     return (
       <Card className="rounded-xl border border-neutral-200 p-6 text-center dark:border-neutral-900">
@@ -141,10 +148,10 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
                   Kontribusi {new Date().getFullYear()}
                 </h4>
                 <span className="text-sm font-medium text-neutral-600 dark:text-neutral-300">
-                  {stats.totalContributions} kontribusi
+                  {yearTotal} kontribusi
                 </span>
               </div>
-              <ContributionGrid contributions={stats.contributions} />
+              <ContributionGrid contributions={yearContributions} />
             </div>
 
             <div className="grid gap-6 lg:grid-cols-2">

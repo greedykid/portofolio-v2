@@ -65,6 +65,16 @@ export const viewport: Viewport = {
   themeColor: '#121212',
 };
 
+// Terapkan tema tersimpan sebelum paint pertama agar tidak flash mode terang
+const themeInitScript = `
+try {
+  var t = localStorage.getItem('portfolio-theme');
+  document.documentElement.setAttribute('class', t === 'light' ? 'light' : 'dark');
+} catch (e) {
+  document.documentElement.setAttribute('class', 'dark');
+}
+`;
+
 export default function RootLayout({
   children,
 }: {
@@ -75,6 +85,7 @@ export default function RootLayout({
       <body
         className={`${jakartaSans.variable} ${firaCode.variable} font-sans`}
       >
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <ThemeProvider>
           <Layout>{children}</Layout>
         </ThemeProvider>

@@ -45,11 +45,15 @@ const ContributionGrid = ({ contributions }: ContributionGridProps) => {
     return cols;
   }, [contributions]);
 
-  // Scroll ke kanan (bulan berjalan) saat pertama kali render
+  // Scroll agar bulan berjalan terlihat saat pertama kali render
   useEffect(() => {
     const el = scrollRef.current;
-    if (el) el.scrollLeft = el.scrollWidth;
-  }, [weeks.length]);
+    if (!el || weeks.length === 0) return;
+    const today = new Date().toISOString().slice(0, 10);
+    let idx = weeks.findIndex((col) => col.some((d) => d.date === today));
+    if (idx === -1) idx = weeks.length - 1;
+    el.scrollLeft = Math.max(0, idx * 18 - el.clientWidth + 36);
+  }, [weeks]);
 
   const monthLabels = useMemo(() => {
     const labels: { index: number; label: string }[] = [];
@@ -72,7 +76,7 @@ const ContributionGrid = ({ contributions }: ContributionGridProps) => {
     <div className="flex flex-col gap-2">
       <div className="flex gap-1">
         {/* Day labels */}
-        <div className="flex shrink-0 flex-col pr-1 text-[10px] text-neutral-500">
+        <div className="flex shrink-0 flex-col pb-1.5 pr-1 text-[10px] text-neutral-500">
           <div className="flex flex-1 flex-col justify-between">
             <span>Mon</span>
             <span>Wed</span>
@@ -81,8 +85,8 @@ const ContributionGrid = ({ contributions }: ContributionGridProps) => {
           {/* Spacer agar sejajar dengan baris label bulan */}
           <div className="mt-1 h-4" />
         </div>
-        <div ref={scrollRef} className="overflow-x-auto">
-          <div>
+        <div ref={scrollRef} className="overflow-x-auto pb-1.5">
+          <div className="w-max">
             <div className="flex gap-1">
               {weeks.map((week, wi) => (
                 <div key={wi} className="flex flex-col gap-1">
