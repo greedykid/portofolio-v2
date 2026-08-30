@@ -2,7 +2,7 @@ import { PROFILE } from '@/common/constant/data';
 
 const Profile = () => {
   return (
-    <div className="px-8 pt-10 lg:px-2 lg:pt-0">
+    <div className="lg:px-2">
       <div className="flex w-full flex-grow items-center gap-4 lg:flex-col lg:items-start lg:gap-0.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

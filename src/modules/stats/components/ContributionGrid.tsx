@@ -20,9 +20,13 @@ const ContributionGrid = ({ contributions }: ContributionGridProps) => {
 
   const weeks = useMemo(() => {
     if (contributions.length === 0) return [];
-    const byDate = new Map(contributions.map((c) => [c.date, c]));
-    const first = new Date(contributions[0].date);
-    const last = new Date(contributions[contributions.length - 1].date);
+    // Sort ascending by date so `first` is the earliest and `last` is the latest.
+    const sorted = [...contributions].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    );
+    const byDate = new Map(sorted.map((c) => [c.date, c]));
+    const first = new Date(sorted[0].date);
+    const last = new Date(sorted[sorted.length - 1].date);
     const start = new Date(first);
     // Align to Sunday
     start.setDate(start.getDate() - ((start.getDay() + 6) % 7));

@@ -9,7 +9,6 @@ import TechStack from '@/modules/home/components/TechStack';
 import Services from '@/modules/home/components/Services';
 import Projects from '@/modules/projects/components/Projects';
 import BlogSection from '@/modules/blog/components/BlogSection';
-import Testimonial from '@/modules/testimonial/components/Testimonial';
 import Statistics from '@/modules/stats/components/Statistics';
 import GitHubStats from '@/modules/stats/components/GitHubStats';
 import Experiences from '@/modules/about/components/Experiences';
@@ -31,8 +30,6 @@ const HomePage = async () => {
       <Reveal><Projects /></Reveal>
       <Breakline className="my-8" />
       <Reveal><BlogSection posts={posts} /></Reveal>
-      <Breakline className="my-8" />
-      <Reveal><Testimonial /></Reveal>
       <Breakline className="my-8" />
       <Reveal><Statistics /></Reveal>
       <Breakline className="my-8" />
