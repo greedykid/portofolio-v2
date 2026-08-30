@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import Card from '@/common/components/elements/Card';
 import { GitHubStats as GitHubStatsData } from '@/common/libs/github';
 
+import ContributionGrid from './ContributionGrid';
+
 interface GitHubStatsProps {
   stats: GitHubStatsData;
 }
@@ -23,7 +25,7 @@ const languageColors: Record<string, string> = {
 
 const GitHubStats = ({ stats }: GitHubStatsProps) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'repos'>('overview');
-  const { user, repos, totalStars, error } = stats;
+  const { user, repos, totalStars } = stats;
 
   if (!user) {
     return (
@@ -37,10 +39,6 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
       </Card>
     );
   }
-
-  const topRepos = [...repos]
-    .sort((a, b) => b.stargazersCount - a.stargazersCount || b.forksCount - a.forksCount)
-    .slice(0, 6);
 
   const languages = Array.from(
     repos.reduce((map, repo) => {
@@ -135,57 +133,72 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
       {/* Content */}
       <div className="p-6">
         {activeTab === 'overview' ? (
-          <div className="grid gap-6 lg:grid-cols-2">
-            {/* Streak card (uses proven image API) */}
-            <div className="flex flex-col gap-2 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
-              <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Aktivitas Kontribusi
-              </h4>
-              <div className="flex flex-1 items-center justify-center">
-                <img
-                  src={`https://github-readme-streak-stats.herokuapp.com/?user=${user.login}&background=0e0e0e&ring=2dd4bf&fire=2dd4bf&currStreakNum=ffffff&sideNums=94a3b8&currStreakLabel=2dd4bf&sideLabels=94a3b8&dates=94a3b8`}
-                  alt="GitHub streak stats"
-                  loading="lazy"
-                  className="w-full max-w-full"
-                />
+          <div className="space-y-6">
+            {/* Contribution grid */}
+            <div className="flex flex-col gap-3 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                  Kontribusi {new Date().getFullYear()}
+                </h4>
+                <span className="text-sm font-medium text-neutral-600 dark:text-neutral-300">
+                  {stats.totalContributions} kontribusi
+                </span>
               </div>
+              <ContributionGrid contributions={stats.contributions} />
             </div>
 
-            {/* Language breakdown */}
-            <div className="flex flex-col gap-3 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
-              <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Bahasa yang Digunakan
-              </h4>
-              <div className="space-y-3 py-2">
-                {languages.map(([lang, count]) => {
-                  const pct = totalLang > 0 ? Math.round((count / totalLang) * 100) : 0;
-                  return (
-                    <div key={lang}>
-                      <div className="mb-1 flex justify-between text-[13px]">
-                        <span className="flex items-center gap-1.5 text-neutral-700 dark:text-neutral-300">
-                          <span
-                            className={`h-2.5 w-2.5 rounded-full ${
+            <div className="grid gap-6 lg:grid-cols-2">
+              {/* Streak card (uses proven image API) */}
+              <div className="flex flex-col gap-2 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
+                <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                  Aktivitas Kontribusi
+                </h4>
+                <div className="flex flex-1 items-center justify-center">
+                  <img
+                    src={`https://github-readme-streak-stats.herokuapp.com/?user=${user.login}&background=0e0e0e&ring=2dd4bf&fire=2dd4bf&currStreakNum=ffffff&sideNums=94a3b8&currStreakLabel=2dd4bf&sideLabels=94a3b8&dates=94a3b8`}
+                    alt="GitHub streak stats"
+                    loading="lazy"
+                    className="w-full max-w-full"
+                  />
+                </div>
+              </div>
+
+              {/* Language breakdown */}
+              <div className="flex flex-col gap-3 rounded-xl bg-neutral-50 p-4 dark:bg-neutral-800/50">
+                <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                  Bahasa yang Digunakan
+                </h4>
+                <div className="space-y-3 py-2">
+                  {languages.map(([lang, count]) => {
+                    const pct = totalLang > 0 ? Math.round((count / totalLang) * 100) : 0;
+                    return (
+                      <div key={lang}>
+                        <div className="mb-1 flex justify-between text-[13px]">
+                          <span className="flex items-center gap-1.5 text-neutral-700 dark:text-neutral-300">
+                            <span
+                              className={`h-2.5 w-2.5 rounded-full ${
+                                languageColors[lang] ?? 'bg-neutral-400'
+                              }`}
+                            />
+                            {lang}
+                          </span>
+                          <span className="text-neutral-500">{count} repo</span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
+                          <motion.div
+                            className={`h-full rounded-full ${
                               languageColors[lang] ?? 'bg-neutral-400'
                             }`}
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${pct}%` }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
                           />
-                          {lang}
-                        </span>
-                        <span className="text-neutral-500">{count} repo</span>
+                        </div>
                       </div>
-                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
-                        <motion.div
-                          className={`h-full rounded-full ${
-                            languageColors[lang] ?? 'bg-neutral-400'
-                          }`}
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${pct}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.6 }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

@@ -16,17 +16,16 @@ const SocialMedia = () => {
       <div className="mb-2 ml-2 mt-1 text-sm text-neutral-600 dark:text-neutral-500">
         Let&apos;s Connect
       </div>
-      <div className="flex justify-between px-5 pt-2">
+      <div className="flex items-center gap-4 px-6 pt-2">
         {socials.map((item, index) => (
           <Link
             key={index}
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-700 transition-all duration-300 hover:scale-110 hover:border-teal-500 hover:text-teal-600 dark:border-neutral-700 dark:text-neutral-400 dark:hover:border-teal-400 dark:hover:text-teal-400"
           >
-            <div className="text-neutral-700 transition duration-300 hover:text-neutral-900 dark:text-neutral-400 hover:dark:text-neutral-300 lg:hover:scale-110">
-              {item.icon}
-            </div>
+            {item.icon}
           </Link>
         ))}
       </div>

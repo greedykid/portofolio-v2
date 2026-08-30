@@ -21,15 +21,24 @@ export interface GitHubRepo {
   updatedAt: string;
 }
 
+export interface GitHubContribution {
+  date: string;
+  count: number;
+  level: number; // 0-4
+}
+
 export interface GitHubStats {
   user: GitHubUser | null;
   repos: GitHubRepo[];
   totalStars: number;
+  contributions: GitHubContribution[];
+  totalContributions: number;
   error: boolean;
 }
 
 const GITHUB_USER = 'greedykid';
 const API = 'https://api.github.com';
+const CONTRIB_API = 'https://github-contributions-api.jogruber.de/v4';
 
 function headers(): HeadersInit {
   const headers: HeadersInit = {
@@ -46,7 +55,7 @@ function headers(): HeadersInit {
 
 export async function getGithubStats(): Promise<GitHubStats> {
   try {
-    const [userRes, reposRes] = await Promise.all([
+    const [userRes, reposRes, contribRes] = await Promise.all([
       fetch(`${API}/users/${GITHUB_USER}`, {
         headers: headers(),
         next: { revalidate: 300 },
@@ -55,11 +64,21 @@ export async function getGithubStats(): Promise<GitHubStats> {
         headers: headers(),
         next: { revalidate: 300 },
       }),
+      fetch(`${CONTRIB_API}/${GITHUB_USER}`, {
+        next: { revalidate: 300 },
+      }),
     ]);
 
     if (!userRes.ok || !reposRes.ok) {
       console.error('GitHub API error', userRes.status, reposRes.status);
-      return { user: null, repos: [], totalStars: 0, error: true };
+      return {
+        user: null,
+        repos: [],
+        totalStars: 0,
+        contributions: [],
+        totalContributions: 0,
+        error: true,
+      };
     }
 
     const userData = await userRes.json();
@@ -81,6 +100,31 @@ export async function getGithubStats(): Promise<GitHubStats> {
       0,
     );
 
+    let contributions: GitHubContribution[] = [];
+    let totalContributions = 0;
+    if (contribRes.ok) {
+      const contribData = await contribRes.json();
+      contributions = (contribData.contributions ?? []).map(
+        (c: Record<string, unknown>) => ({
+          date: c.date as string,
+          count: c.count as number,
+          level: c.level as number,
+        }),
+      );
+      const total = contribData.total as Record<string, number> | undefined;
+      if (total) {
+        totalContributions = Object.values(total).reduce(
+          (sum, n) => sum + (n ?? 0),
+          0,
+        );
+      } else {
+        totalContributions = contributions.reduce(
+          (sum, c) => sum + c.count,
+          0,
+        );
+      }
+    }
+
     const user: GitHubUser = {
       login: userData.login,
       name: userData.name ?? userData.login,
@@ -93,9 +137,23 @@ export async function getGithubStats(): Promise<GitHubStats> {
       htmlUrl: userData.html_url,
     };
 
-    return { user, repos, totalStars, error: false };
+    return {
+      user,
+      repos,
+      totalStars,
+      contributions,
+      totalContributions,
+      error: false,
+    };
   } catch (err) {
     console.error('GitHub fetch failed', err);
-    return { user: null, repos: [], totalStars: 0, error: true };
+    return {
+      user: null,
+      repos: [],
+      totalStars: 0,
+      contributions: [],
+      totalContributions: 0,
+      error: true,
+    };
   }
 }
