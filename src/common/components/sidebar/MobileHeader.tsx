@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -53,35 +54,45 @@ const MobileHeader = () => {
       </div>
 
       {/* Dropdown menu */}
-      {open && (
-        <div className="border-b border-neutral-200 bg-light px-5 pb-5 dark:border-neutral-800 dark:bg-dark">
-          <nav className="space-y-1 py-3">
-            {NAV_ITEMS.map((item) => {
-              const active = item.href === '/' ? pathname === '/' : pathname === item.href;
-              return (
-                <Link
-                  key={item.title}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={clsx(
-                    'flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] transition-colors',
-                    active
-                      ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100'
-                      : 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800',
-                  )}
-                >
-                  {item.icon}
-                  <span>{item.title}</span>
-                </Link>
-              );
-            })}
-          </nav>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="overflow-hidden border-b border-neutral-200 bg-light dark:border-neutral-800 dark:bg-dark"
+          >
+            <div className="px-5 pb-5">
+              <nav className="space-y-1 py-3">
+                {NAV_ITEMS.map((item) => {
+                  const active = item.href === '/' ? pathname === '/' : pathname === item.href;
+                  return (
+                    <Link
+                      key={item.title}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className={clsx(
+                        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] transition-colors',
+                        active
+                          ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100'
+                          : 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800',
+                      )}
+                    >
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
 
-          <div className="mt-3 border-t border-neutral-200 pt-4 dark:border-neutral-800">
-            <SocialMedia />
-          </div>
-        </div>
-      )}
+              <div className="mt-3 border-t border-neutral-200 pt-4 dark:border-neutral-800">
+                <SocialMedia />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
