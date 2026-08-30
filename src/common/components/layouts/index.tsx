@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import Navigation from '../sidebar/Navigation';
 import Profile from '../sidebar/Profile';
 import Breakline from '../elements/Breakline';
+import ScrollToTop from '../elements/ScrollToTop';
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,6 +24,7 @@ const Layout = ({ children }: LayoutProps) => {
           {children}
         </main>
       </div>
+      <ScrollToTop />
     </div>
   );
 };

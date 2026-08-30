@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FiHome, FiUser, FiFolder, FiMail } from 'react-icons/fi';
+import { FiHome, FiUser, FiFolder, FiMail, FiBookOpen } from 'react-icons/fi';
 import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
 
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { title: 'Home', href: '/', icon: <FiHome size={18} /> },
   { title: 'About', href: '/#about', icon: <FiUser size={18} /> },
   { title: 'Projects', href: '/#projects', icon: <FiFolder size={18} /> },
+  { title: 'Blog', href: '/blog', icon: <FiBookOpen size={18} /> },
   { title: 'Contact', href: '/#contact', icon: <FiMail size={18} /> },
 ];
 

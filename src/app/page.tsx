@@ -1,30 +1,43 @@
 import Breakline from '@/common/components/elements/Breakline';
 import Container from '@/common/components/elements/Container';
+import Reveal from '@/common/components/elements/Reveal';
+import { getAllPosts } from '@/common/libs/blog';
 
 import Introduction from '@/modules/home/components/Introduction';
 import TechStack from '@/modules/home/components/TechStack';
 import Services from '@/modules/home/components/Services';
 import Projects from '@/modules/projects/components/Projects';
+import BlogSection from '@/modules/blog/components/BlogSection';
+import Testimonial from '@/modules/testimonial/components/Testimonial';
+import Statistics from '@/modules/stats/components/Statistics';
 import Experiences from '@/modules/about/components/Experiences';
 import Education from '@/modules/about/components/Education';
 import Contact from '@/modules/contact/components/Contact';
 
-const HomePage = () => {
+const HomePage = async () => {
+  const posts = await getAllPosts();
+
   return (
     <Container data-aos="fade-up">
       <Introduction />
       <Breakline className="my-8" />
-      <TechStack />
+      <Reveal><TechStack /></Reveal>
       <Breakline className="my-8" />
-      <Projects />
+      <Reveal><Projects /></Reveal>
       <Breakline className="my-8" />
-      <Experiences />
+      <Reveal><BlogSection posts={posts} /></Reveal>
       <Breakline className="my-8" />
-      <Education />
+      <Reveal><Testimonial /></Reveal>
       <Breakline className="my-8" />
-      <Services />
+      <Reveal><Statistics /></Reveal>
       <Breakline className="my-8" />
-      <Contact />
+      <Reveal><Experiences /></Reveal>
+      <Breakline className="my-8" />
+      <Reveal><Education /></Reveal>
+      <Breakline className="my-8" />
+      <Reveal><Services /></Reveal>
+      <Breakline className="my-8" />
+      <Reveal><Contact /></Reveal>
     </Container>
   );
 };

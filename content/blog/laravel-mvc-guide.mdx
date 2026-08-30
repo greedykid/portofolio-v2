@@ -1,0 +1,44 @@
+---
+title: "Memahami Pola MVC di Laravel untuk Pemula"
+date: "2026-03-15"
+description: "Penjelasan sederhana tentang arsitektur MVC di Laravel: Model, View, dan Controller, serta bagaimana ketiganya bekerja bersama."
+tags: ["Laravel", "PHP", "Web Development"]
+featured: true
+---
+
+## Apa itu MVC?
+
+MVC (Model-View-Controller) adalah pola arsitektur yang memisahkan logika aplikasi menjadi tiga bagian. Di Laravel, pola ini menjadi tulang punggung hampir semua aplikasi.
+
+### Model
+
+Model berhubungan langsung dengan database. Di Laravel, model biasanya menggunakan Eloquent ORM untuk melakukan query.
+
+```php
+$products = Product::where('category_id', $categoryId)->get();
+```
+
+### View
+
+View adalah tampilan yang dilihat pengguna. Di Laravel, view menggunakan Blade template engine.
+
+```php
+@foreach ($products as $product)
+    <p>{{ $product->name }}</p>
+@endforeach
+```
+
+### Controller
+
+Controller adalah "jembatan" yang menghubungkan Model dan View. Di sinilah logika bisnis berada.
+
+```php
+public function index() {
+    $products = Product::all();
+    return view('products.index', compact('products'));
+}
+```
+
+## Mengapa MVC Penting?
+
+Pemisahan ini membuat kode lebih mudah dirawat, diuji, dan dikembangkan secara kolaboratif. Setiap bagian punya tanggung jawab yang jelas.

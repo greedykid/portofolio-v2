@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 
 import { PROJECTS } from '@/common/constant/data';
 import Card from '@/common/components/elements/Card';
-import Image from '@/common/components/elements/Image';
 import SectionHeading from '@/common/components/elements/SectionHeading';
 
 import ProjectLink from './ProjectLink';
+import LightboxImage from './LightboxImage';
 
 const Projects = () => {
   return (
@@ -35,14 +35,12 @@ const Projects = () => {
                 </div>
               )}
               <div className="relative">
-                <Image
+                <LightboxImage
                   src={project.image}
-                  width={400}
-                  height={200}
                   alt={project.title}
                   className="h-48 rounded-t-xl object-cover object-left"
                 />
-                <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center gap-1 rounded-t-xl bg-black text-sm font-medium text-white opacity-0 transition-opacity duration-300 group-hover:opacity-80">
+                <div className="pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center gap-1 rounded-t-xl bg-black text-sm font-medium text-white opacity-0 transition-opacity duration-300 group-hover:opacity-80">
                   <span>View Project</span>
                 </div>
               </div>

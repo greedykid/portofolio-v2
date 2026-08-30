@@ -1,0 +1,45 @@
+---
+title: "Optimasi Query MySQL untuk Aplikasi Skala Menengah"
+date: "2026-03-01"
+description: "Teknik praktis mengoptimalkan query MySQL: penggunaan index, menghindari N+1, dan analisis dengan EXPLAIN."
+tags: ["MySQL", "Database", "Performance"]
+featured: false
+---
+
+## Kenapa Optimasi Query Penting?
+
+Seiring data bertumbuh, query yang lambat akan menjadi bottleneck. Optimasi query adalah keterampilan penting bagi setiap developer backend.
+
+## Gunakan Index
+
+Index mempercepat pencarian. Tambahkan index pada kolom yang sering dipakai di `WHERE` atau `JOIN`.
+
+```sql
+CREATE INDEX idx_products_category ON products (category_id);
+```
+
+## Hindari N+1 Problem
+
+N+1 terjadi saat kita memanggil query di dalam loop. Solusinya gunakan *eager loading*.
+
+```php
+// Buruk: N+1
+foreach ($orders as $order) {
+    echo $order->customer->name;
+}
+
+// Baik
+$orders = Order::with('customer')->get();
+```
+
+## Analisis dengan EXPLAIN
+
+`EXPLAIN` membantu memahami bagaimana database mengeksekusi query.
+
+```sql
+EXPLAIN SELECT * FROM orders WHERE customer_id = 5;
+```
+
+## Kesimpulan
+
+Optimasi bukan sekadar menambah index. Pahami struktur data, pola akses, dan selalu ukur dengan `EXPLAIN`.

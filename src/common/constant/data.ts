@@ -218,3 +218,41 @@ export const LANGUAGES = [
   { name: 'Bahasa Indonesia', level: 'Penutur Asli / Native' },
   { name: 'Bahasa Inggris', level: 'Profesional Kerja' },
 ];
+
+export const SKILL_LEVELS = [
+  { name: 'Laravel', level: 90, category: 'Web' },
+  { name: 'MySQL', level: 88, category: 'Web' },
+  { name: 'Tailwind CSS', level: 92, category: 'Web' },
+  { name: 'PHP', level: 85, category: 'Web' },
+  { name: 'JavaScript (ES6+)', level: 80, category: 'Web' },
+  { name: 'IT Support', level: 95, category: 'IT' },
+  { name: 'Networking (Cisco)', level: 85, category: 'IT' },
+  { name: 'Linux', level: 78, category: 'IT' },
+  { name: 'Git & GitHub', level: 86, category: 'Tools' },
+  { name: 'Docker', level: 65, category: 'Tools' },
+  { name: 'Figma', level: 72, category: 'Tools' },
+];
+
+export const TESTIMONIALS = [
+  {
+    name: 'Budi Santoso',
+    role: 'Pemilik Toko — Berkah Mulia',
+    quote:
+      'Rizki mengerjakan website katalog kami dengan sangat profesional. Hasilnya cepat, rapi, dan mudah dikelola. Sangat direkomendasikan untuk kebutuhan web development.',
+    avatar: '/images/profile.svg',
+  },
+  {
+    name: 'Dosen Pembimbing',
+    role: 'Universitas Gunadarma',
+    quote:
+      'Dedikasi dan kemampuan teknis Rizki dalam menyelesaikan proyek e-commerce GEGARES sangat mengesankan. Dokumentasi sistem yang ia buat lengkap dan terstruktur.',
+    avatar: '/images/profile.svg',
+  },
+  {
+    name: 'Kolega Freelance',
+    role: 'Rekan Kerja Proyek',
+    quote:
+      'Kerja sama dengan Rizki sangat lancar. Ia cepat memahami kebutuhan, komunikatif, dan selalu menyerahkan hasil tepat waktu dengan kualitas yang baik.',
+    avatar: '/images/profile.svg',
+  },
+];
