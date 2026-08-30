@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { GitHubContribution } from '@/common/libs/github';
 
 interface ContributionGridProps {
@@ -17,6 +17,7 @@ const LEVEL_COLORS = [
 
 const ContributionGrid = ({ contributions }: ContributionGridProps) => {
   const [selected, setSelected] = useState<{ date: string; count: number } | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const weeks = useMemo(() => {
     if (contributions.length === 0) return [];
@@ -44,6 +45,12 @@ const ContributionGrid = ({ contributions }: ContributionGridProps) => {
     return cols;
   }, [contributions]);
 
+  // Scroll ke kanan (bulan berjalan) saat pertama kali render
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, [weeks.length]);
+
   const monthLabels = useMemo(() => {
     const labels: { index: number; label: string }[] = [];
     weeks.forEach((col, i) => {
@@ -65,39 +72,49 @@ const ContributionGrid = ({ contributions }: ContributionGridProps) => {
     <div className="flex flex-col gap-2">
       <div className="flex gap-1">
         {/* Day labels */}
-        <div className="flex flex-col justify-between pr-1 text-[10px] text-neutral-500">
-          <span>Mon</span>
-          <span>Wed</span>
-          <span>Fri</span>
+        <div className="flex shrink-0 flex-col pr-1 text-[10px] text-neutral-500">
+          <div className="flex flex-1 flex-col justify-between">
+            <span>Mon</span>
+            <span>Wed</span>
+            <span>Fri</span>
+          </div>
+          {/* Spacer agar sejajar dengan baris label bulan */}
+          <div className="mt-1 h-4" />
         </div>
-        <div className="overflow-x-auto pb-1">
-          <div className="flex gap-1">
-            {weeks.map((week, wi) => (
-              <div key={wi} className="flex flex-col gap-1">
-                {week.map((day, di) => (
-                  <div
-                    key={day.date}
-                    className={`h-3.5 w-3.5 rounded ${LEVEL_COLORS[day.level] ?? LEVEL_COLORS[0]} ${
-                      selected?.date === day.date ? 'ring-2 ring-teal-500' : ''
-                    }`}
-                    onClick={() =>
-                      setSelected(selected?.date === day.date ? null : { date: day.date, count: day.count })
-                    }
-                    title={`${day.date}: ${day.count} kontribusi`}
-                  />
-                ))}
-              </div>
-            ))}
+        <div ref={scrollRef} className="overflow-x-auto">
+          <div>
+            <div className="flex gap-1">
+              {weeks.map((week, wi) => (
+                <div key={wi} className="flex flex-col gap-1">
+                  {week.map((day, di) => (
+                    <div
+                      key={day.date}
+                      className={`h-3.5 w-3.5 rounded ${LEVEL_COLORS[day.level] ?? LEVEL_COLORS[0]} ${
+                        selected?.date === day.date ? 'ring-2 ring-teal-500' : ''
+                      }`}
+                      onClick={() =>
+                        setSelected(selected?.date === day.date ? null : { date: day.date, count: day.count })
+                      }
+                      title={`${day.date}: ${day.count} kontribusi`}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Month labels */}
+            <div className="mt-1 flex h-4 gap-1 text-[10px] leading-4 text-neutral-500">
+              {weeks.map((_, wi) => {
+                const label = monthLabels.find((m) => m.index === wi)?.label;
+                return (
+                  <span key={wi} className="w-3.5 whitespace-nowrap">
+                    {label ?? ''}
+                  </span>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Month labels */}
-      <div className="flex gap-1 pl-6 text-[10px] text-neutral-500">
-        {weeks.map((_, wi) => {
-          const label = monthLabels.find((m) => m.index === wi)?.label;
-          return <span key={wi} className="w-3.5">{label ?? ''}</span>;
-        })}
       </div>
 
       <div className="flex items-center justify-between text-[12px]">

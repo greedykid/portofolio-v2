@@ -40,13 +40,16 @@ const MobileHeader = () => {
           </span>
         </Link>
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="flex h-9 w-9 items-center justify-center rounded-md border border-neutral-200 bg-transparent text-neutral-700 dark:border-neutral-700 dark:text-neutral-300"
-          aria-label="Toggle menu"
-        >
-          {open ? <FiX size={20} /> : <FiMenu size={20} />}
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggleButton />
+          <button
+            onClick={() => setOpen(!open)}
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-neutral-200 bg-transparent text-neutral-700 dark:border-neutral-700 dark:text-neutral-300"
+            aria-label="Toggle menu"
+          >
+            {open ? <FiX size={20} /> : <FiMenu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Dropdown menu */}
@@ -76,10 +79,6 @@ const MobileHeader = () => {
 
           <div className="mt-3 border-t border-neutral-200 pt-4 dark:border-neutral-800">
             <SocialMedia />
-            <div className="mt-3 flex items-center gap-2 px-2">
-              <span className="text-sm text-neutral-600 dark:text-neutral-500">Theme</span>
-              <ThemeToggleButton />
-            </div>
           </div>
         </div>
       )}

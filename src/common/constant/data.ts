@@ -5,7 +5,7 @@ export const PROFILE = {
   location: 'Jakarta Barat, Indonesia 🇮🇩',
   availability: 'Tersedia untuk Peluang Kerja (Full-time / Remote / Hybrid / On-site)',
   gpa: '3.58',
-  bio: 'Lulusan S1 Sistem Informasi Universitas Gunadarma (IPK 3.58/4.00) dengan keahlian pengembangan web full stack (Laravel, MySQL, Tailwind CSS) dan IT Support & Networking.',
+  bio: 'Lulusan S1 Sistem Informasi Universitas Gunadarma dengan keahlian pengembangan web full stack (Laravel, MySQL, Tailwind CSS) dan IT Support & Networking.',
   aboutNarrative: [
     'Saya adalah lulusan Sarjana (S1) Sistem Informasi Universitas Gunadarma dengan IPK 3.58 / 4.00, memiliki dasar keilmuan kuat dalam Rekayasa Perangkat Lunak, Basis Data Relasional, Analisis & Perancangan Sistem Informasi, serta Jaringan Komputer.',
     'Memiliki keahlian teruji dalam pengembangan aplikasi web full stack modern menggunakan ekosistem PHP/Laravel, MySQL, Tailwind CSS, dan RESTful API, serta berpengalaman dalam penyusunan arsitektur sistem komprehensif (UML, Use Case, Sequence Diagram, dan ERD).',

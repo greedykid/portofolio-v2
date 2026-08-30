@@ -1,7 +1,8 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { FiMaximize2, FiX } from 'react-icons/fi';
 
 import Image from '@/common/components/elements/Image';
@@ -14,6 +15,21 @@ interface LightboxImageProps {
 
 const LightboxImage = ({ src, alt, className = '' }: LightboxImageProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Kunci scroll halaman saat lightbox terbuka
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -34,33 +50,37 @@ const LightboxImage = ({ src, alt, className = '' }: LightboxImageProps) => {
         </div>
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-          >
-            <button
-              className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
-              aria-label="Tutup"
-              onClick={() => setIsOpen(false)}
-            >
-              <FiX size={24} />
-            </button>
-            <motion.img
-              src={src}
-              alt={alt}
-              className="max-h-full max-w-full rounded-lg object-contain"
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </motion.div>
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsOpen(false)}
+              >
+                <button
+                  className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+                  aria-label="Tutup"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FiX size={24} />
+                </button>
+                <motion.img
+                  src={src}
+                  alt={alt}
+                  className="max-h-full max-w-full rounded-lg object-contain"
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </>
   );
 };
