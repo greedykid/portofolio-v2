@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FiGithub, FiMail, FiLinkedin, FiMessageCircle } from 'react-icons/fi';
+import { FiGithub, FiMail, FiLinkedin } from 'react-icons/fi';
 
 import { SOCIAL_MEDIA } from '@/common/constant/data';
 
@@ -7,7 +7,6 @@ const socials = [
   { title: 'Email', href: SOCIAL_MEDIA.email, icon: <FiMail size={18} /> },
   { title: 'GitHub', href: SOCIAL_MEDIA.github, icon: <FiGithub size={18} /> },
   { title: 'LinkedIn', href: SOCIAL_MEDIA.linkedin, icon: <FiLinkedin size={18} /> },
-  { title: 'WhatsApp', href: SOCIAL_MEDIA.whatsapp, icon: <FiMessageCircle size={18} /> },
 ];
 
 const SocialMedia = () => {

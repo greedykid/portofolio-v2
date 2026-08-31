@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FiMail, FiGithub, FiLinkedin, FiMessageCircle } from 'react-icons/fi';
+import { FiMail, FiGithub, FiLinkedin } from 'react-icons/fi';
 
 import { PROFILE, SOCIAL_MEDIA } from '@/common/constant/data';
 import SectionHeading from '@/common/components/elements/SectionHeading';
@@ -7,7 +7,6 @@ import Card from '@/common/components/elements/Card';
 
 const CONTACT_ITEMS = [
   { label: 'Email', href: SOCIAL_MEDIA.email, icon: <FiMail size={20} /> },
-  { label: 'WhatsApp', href: SOCIAL_MEDIA.whatsapp, icon: <FiMessageCircle size={20} /> },
   { label: 'GitHub', href: SOCIAL_MEDIA.github, icon: <FiGithub size={20} /> },
   { label: 'LinkedIn', href: SOCIAL_MEDIA.linkedin, icon: <FiLinkedin size={20} /> },
 ];

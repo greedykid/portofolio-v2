@@ -18,7 +18,6 @@ export const SOCIAL_MEDIA = {
   email: 'mailto:rizkiarbi65@gmail.com',
   github: 'https://github.com/greedykid',
   linkedin: 'https://linkedin.com/in/rizkiarbiansyah',
-  whatsapp: 'https://wa.me/6282112619691',
 };
 
 export const STATS = [

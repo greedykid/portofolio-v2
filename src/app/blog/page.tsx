@@ -5,10 +5,27 @@ import SectionHeading from '@/common/components/elements/SectionHeading';
 import { getAllPosts } from '@/common/libs/blog';
 import BlogCard from '@/modules/blog/components/BlogCard';
 
+const SITE_URL = 'https://rizkiarbiansyah.vercel.app';
+
 export const metadata: Metadata = {
   title: 'Wawasan',
   description:
     'Artikel dan catatan Rizki Arbiansyah seputar pengembangan web, database, dan dunia IT.',
+  openGraph: {
+    type: 'website',
+    locale: 'id_ID',
+    url: `${SITE_URL}/blog`,
+    siteName: 'Rizki Arbiansyah Portfolio',
+    title: 'Wawasan | Rizki Arbiansyah',
+    description:
+      'Artikel dan catatan Rizki Arbiansyah seputar pengembangan web, database, dan dunia IT.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Wawasan | Rizki Arbiansyah',
+    description:
+      'Artikel dan catatan Rizki Arbiansyah seputar pengembangan web, database, dan dunia IT.',
+  },
 };
 
 const BlogPage = async () => {

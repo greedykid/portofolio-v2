@@ -15,15 +15,45 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
+const SITE_URL = 'https://rizkiarbiansyah.vercel.app';
+
 export async function generateMetadata({
   params,
 }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return { title: 'Artikel Tidak Ditemukan' };
+
+  const pageUrl = `${SITE_URL}/blog/${post.slug}`;
+  const ogImageUrl = `${pageUrl}/opengraph-image`;
+
   return {
     title: post.title,
     description: post.description,
+    openGraph: {
+      type: 'article',
+      locale: 'id_ID',
+      url: pageUrl,
+      siteName: 'Rizki Arbiansyah Portfolio',
+      title: post.title,
+      description: post.description,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      publishedTime: post.date,
+      tags: post.tags,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [ogImageUrl],
+    },
   };
 }
 

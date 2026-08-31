@@ -41,6 +41,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Rizki Arbiansyah', url: SITE_URL }],
   creator: 'Rizki Arbiansyah',
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
@@ -49,12 +52,21 @@ export const metadata: Metadata = {
     title: 'Rizki Arbiansyah | Web Developer & IT Support',
     description:
       'Portofolio Rizki Arbiansyah - Web Development, IT Support, dan Proyek Sistem Informasi.',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Rizki Arbiansyah Portfolio',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Rizki Arbiansyah | Web Developer & IT Support',
     description:
       'Portofolio Rizki Arbiansyah - Web Development, IT Support, dan Proyek Sistem Informasi.',
+    images: ['/opengraph-image'],
   },
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
