@@ -13,16 +13,25 @@ import ThemeToggleButton from '../elements/ThemeToggleButton';
 import SocialMedia from '../elements/SocialMedia';
 
 const NAV_ITEMS = [
-  { title: 'Home', href: '/', icon: <FiHome size={18} /> },
-  { title: 'About', href: '/#about', icon: <FiUser size={18} /> },
-  { title: 'Projects', href: '/#projects', icon: <FiFolder size={18} /> },
-  { title: 'Blog', href: '/blog', icon: <FiBookOpen size={18} /> },
-  { title: 'Contact', href: '/#contact', icon: <FiMail size={18} /> },
+  { title: 'Home', href: '/', id: 'home', icon: <FiHome size={18} /> },
+  { title: 'About', href: '/#about', id: 'about', icon: <FiUser size={18} /> },
+  { title: 'Projects', href: '/#projects', id: 'projects', icon: <FiFolder size={18} /> },
+  { title: 'Blog', href: '/blog', id: 'blog', icon: <FiBookOpen size={18} /> },
+  { title: 'Contact', href: '/#contact', id: 'contact', icon: <FiMail size={18} /> },
 ];
 
 const MobileHeader = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [activeId, setActiveId] = useState<string>('home');
+
+  const isBlogPage = pathname === '/blog' || pathname.startsWith('/blog/');
+  const active = isBlogPage ? 'blog' : pathname === '/' ? activeId : 'home';
+
+  const handleClick = (id: string) => {
+    setActiveId(id);
+    setOpen(false);
+  };
 
   return (
     <div className="sticky top-0 z-40 lg:hidden">
@@ -69,21 +78,30 @@ const MobileHeader = () => {
             <div className="px-5 pb-5">
               <nav className="space-y-1 py-3">
                 {NAV_ITEMS.map((item) => {
-                  const active = item.href === '/' ? pathname === '/' : pathname === item.href;
+                  const isActive = active === item.id;
                   return (
                     <Link
                       key={item.title}
                       href={item.href}
-                      onClick={() => setOpen(false)}
+                      onClick={() => handleClick(item.id)}
                       className={clsx(
-                        'flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] transition-colors',
-                        active
-                          ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100'
+                        'relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] transition-colors',
+                        isActive
+                          ? 'text-neutral-900 dark:text-neutral-100'
                           : 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800',
                       )}
                     >
-                      {item.icon}
-                      <span>{item.title}</span>
+                      {isActive && (
+                        <motion.span
+                          layoutId="mobile-nav-active-indicator"
+                          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                          className="absolute inset-0 rounded-lg bg-neutral-100 dark:bg-neutral-800"
+                        />
+                      )}
+                      <span className="relative flex items-center gap-3">
+                        {item.icon}
+                        <span>{item.title}</span>
+                      </span>
                     </Link>
                   );
                 })}
