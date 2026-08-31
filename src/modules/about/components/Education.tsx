@@ -1,3 +1,4 @@
+import { FiAward, FiBookOpen } from 'react-icons/fi';
 import { CERTIFICATES, EDUCATION } from '@/common/constant/data';
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import Card from '@/common/components/elements/Card';
@@ -14,8 +15,8 @@ const Education = () => {
             key={index}
             className="flex gap-5 border border-neutral-300 px-6 py-4 dark:border-neutral-900"
           >
-            <div className="mt-1.5 flex h-14 w-14 items-center justify-center rounded bg-neutral-50 text-2xl dark:bg-neutral-800">
-              🎓
+            <div className="mt-1.5 flex h-14 w-14 items-center justify-center rounded bg-neutral-50 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+              <FiBookOpen size={26} />
             </div>
             <div className="w-4/5 space-y-3">
               <div className="space-y-1">
@@ -49,7 +50,8 @@ const Education = () => {
               className="space-y-1 p-5 border border-neutral-200 dark:border-neutral-900"
             >
               <div className="flex items-center gap-2 text-lg font-medium text-neutral-800 dark:text-neutral-200">
-                🏅 {cert.title}
+                <FiAward size={20} className="text-teal-600 dark:text-teal-400" />
+                {cert.title}
               </div>
               <div className="text-sm text-neutral-500 dark:text-neutral-400">
                 {cert.issuer} · {cert.date}

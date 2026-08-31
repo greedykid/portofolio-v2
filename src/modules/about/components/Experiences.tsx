@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
+import { FiBriefcase } from 'react-icons/fi';
 import { HiChevronRight } from 'react-icons/hi';
 
 import Card from '@/common/components/elements/Card';
@@ -32,8 +33,8 @@ const Experiences = () => {
               className="flex gap-5 border border-neutral-300 px-6 py-4 dark:border-neutral-900"
             >
               <div className="mt-1.5 w-fit">
-                <div className="flex h-14 w-14 items-center justify-center rounded bg-neutral-50 text-2xl dark:bg-neutral-800">
-                  🎓
+                <div className="flex h-14 w-14 items-center justify-center rounded bg-neutral-50 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                  <FiBriefcase size={26} />
                 </div>
               </div>
               <div className="w-4/5 space-y-3">
