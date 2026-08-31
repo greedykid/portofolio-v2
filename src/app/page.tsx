@@ -22,7 +22,7 @@ const HomePage = async () => {
   ]);
 
   return (
-    <Container data-aos="fade-up">
+    <Container>
       <Introduction />
       <Breakline className="my-8" />
       <Reveal><TechStack /></Reveal>

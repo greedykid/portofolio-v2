@@ -2,10 +2,11 @@
 
 import { FiGithub, FiFolder, FiStar, FiUsers, FiExternalLink } from 'react-icons/fi';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 import Card from '@/common/components/elements/Card';
 import { GitHubStats as GitHubStatsData, GITHUB_USERNAME } from '@/common/libs/github';
+import { Button } from '@/components/animate-ui/primitives/buttons/button';
 
 import ContributionGrid from './ContributionGrid';
 
@@ -115,26 +116,32 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
 
       {/* Tabs */}
       <div className="flex border-t border-neutral-200 dark:border-neutral-900">
-        <button
-          onClick={() => setActiveTab('overview')}
-          className={`flex-1 py-3 text-sm font-medium transition-colors ${
-            activeTab === 'overview'
-              ? 'border-b-2 border-teal-500 text-neutral-800 dark:text-neutral-100'
-              : 'text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300'
-          }`}
-        >
-          Ringkasan
-        </button>
-        <button
-          onClick={() => setActiveTab('repos')}
-          className={`flex-1 py-3 text-sm font-medium transition-colors ${
-            activeTab === 'repos'
-              ? 'border-b-2 border-teal-500 text-neutral-800 dark:text-neutral-100'
-              : 'text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300'
-          }`}
-        >
-          Repositori ({repos.length})
-        </button>
+        {(['overview', 'repos'] as const).map((key) => {
+          const active = activeTab === key;
+          const label = key === 'overview' ? 'Ringkasan' : `Repositori (${repos.length})`;
+          return (
+            <Button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              hoverScale={1}
+              tapScale={0.97}
+              className={`relative flex-1 py-3 text-sm font-medium transition-colors ${
+                active
+                  ? 'text-neutral-800 dark:text-neutral-100'
+                  : 'text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300'
+              }`}
+            >
+              {active && (
+                <motion.span
+                  layoutId="github-tab-indicator"
+                  className="absolute inset-x-0 bottom-0 h-0.5 bg-teal-500"
+                  transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                />
+              )}
+              {label}
+            </Button>
+          );
+        })}
       </div>
 
       {/* Content */}

@@ -1,11 +1,12 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import { FiBriefcase } from 'react-icons/fi';
 import { HiChevronRight } from 'react-icons/hi';
 
 import Card from '@/common/components/elements/Card';
+import { Button } from '@/components/animate-ui/primitives/buttons/button';
 import { EXPERIENCES } from '@/common/constant/data';
 
 const formatDate = (date: string | null) => {
@@ -71,13 +72,15 @@ const Experiences = () => {
                     </div>
                   </div>
                 </div>
-                <button
+                <Button
                   onClick={() =>
                     setShowResponsibilities((prev) => ({
                       ...prev,
                       [index]: !prev[index],
                     }))
                   }
+                  hoverScale={1.02}
+                  tapScale={0.97}
                   className="-ml-1 mt-5 flex items-center gap-1 text-sm text-neutral-500"
                 >
                   <HiChevronRight
@@ -87,7 +90,7 @@ const Experiences = () => {
                     }`}
                   />
                   {isOpen ? 'Hide' : 'Show'} Responsibilities
-                </button>
+                </Button>
                 <AnimatePresence>
                   {isOpen && (
                     <motion.ul

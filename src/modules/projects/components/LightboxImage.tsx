@@ -1,11 +1,12 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FiMaximize2, FiX } from 'react-icons/fi';
 
 import Image from '@/common/components/elements/Image';
+import { Button } from '@/components/animate-ui/primitives/buttons/button';
 
 interface LightboxImageProps {
   src: string;
@@ -61,13 +62,15 @@ const LightboxImage = ({ src, alt, className = '' }: LightboxImageProps) => {
                 exit={{ opacity: 0 }}
                 onClick={() => setIsOpen(false)}
               >
-                <button
+                <Button
                   className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
                   aria-label="Tutup"
                   onClick={() => setIsOpen(false)}
+                  hoverScale={1.1}
+                  tapScale={0.9}
                 >
                   <FiX size={24} />
-                </button>
+                </Button>
                 <motion.img
                   src={src}
                   alt={alt}

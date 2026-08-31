@@ -6,7 +6,7 @@ import Layout from '@/common/components/layouts';
 import { ThemeProvider } from '@/common/context/ThemeContext';
 import './globals.css';
 
-const SITE_URL = 'https://portofolio-phi-ten-82.vercel.app';
+const SITE_URL = 'https://rizkiarbiansyah.vercel.app';
 
 const jakartaSans = Plus_Jakarta_Sans({
   variable: '--jakartaSans-font',

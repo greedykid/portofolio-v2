@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { FiMenu, FiX, FiHome, FiUser, FiFolder, FiMail, FiBookOpen } from 'react-icons/fi';
 
 import { PROFILE } from '@/common/constant/data';
+import { Button } from '@/components/animate-ui/primitives/buttons/button';
 import ThemeToggleButton from '../elements/ThemeToggleButton';
 import SocialMedia from '../elements/SocialMedia';
 
@@ -43,13 +44,15 @@ const MobileHeader = () => {
 
         <div className="flex items-center gap-2">
           <ThemeToggleButton />
-          <button
+          <Button
             onClick={() => setOpen(!open)}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-neutral-200 bg-transparent text-neutral-700 dark:border-neutral-700 dark:text-neutral-300"
             aria-label="Toggle menu"
+            hoverScale={1.05}
+            tapScale={0.92}
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-neutral-200 bg-transparent text-neutral-700 dark:border-neutral-700 dark:text-neutral-300"
           >
             {open ? <FiX size={20} /> : <FiMenu size={20} />}
-          </button>
+          </Button>
         </div>
       </div>
 

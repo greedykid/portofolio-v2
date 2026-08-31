@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
 
+import { Button } from '@/components/animate-ui/primitives/buttons/button';
+
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -15,15 +17,17 @@ const ScrollToTop = () => {
   }, []);
 
   return (
-    <button
+    <Button
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       aria-label="Kembali ke atas"
-      className={`fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-neutral-500 text-white shadow-lg transition-all duration-300 hover:bg-neutral-600 dark:bg-neutral-600 dark:hover:bg-neutral-700 ${
+      hoverScale={1.1}
+      tapScale={0.9}
+      className={`fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-neutral-500 text-white shadow-lg hover:bg-neutral-600 dark:bg-neutral-600 dark:hover:bg-neutral-700 ${
         isVisible ? 'opacity-100' : 'pointer-events-none opacity-0'
       }`}
     >
       <FiArrowUp size={20} />
-    </button>
+    </Button>
   );
 };
 

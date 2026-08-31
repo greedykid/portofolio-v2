@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'motion/react';
 import { SKILL_LEVELS } from '@/common/constant/data';
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -10,6 +10,8 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 const SkillBars = () => {
+  const reduce = useReducedMotion();
+
   return (
     <div className="space-y-3">
       {SKILL_LEVELS.map((skill, index) => (
@@ -28,7 +30,11 @@ const SkillBars = () => {
               initial={{ width: 0 }}
               whileInView={{ width: `${skill.level}%` }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.05 }}
+              transition={
+                reduce
+                  ? { duration: 0 }
+                  : { type: 'spring', stiffness: 80, damping: 20, delay: index * 0.05 }
+              }
             />
           </div>
         </div>
