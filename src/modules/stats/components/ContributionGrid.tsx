@@ -25,9 +25,16 @@ const ContributionGrid = ({ contributions }: ContributionGridProps) => {
     const sorted = [...contributions].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
+    const today = new Date().toISOString().slice(0, 10);
     const byDate = new Map(sorted.map((c) => [c.date, c]));
     const first = new Date(sorted[0].date);
     const last = new Date(sorted[sorted.length - 1].date);
+    // Jangan render hari di masa depan: batasi "last" ke hari ini.
+    const lastDate = new Date(last);
+    const todayDate = new Date(today);
+    if (lastDate > todayDate) {
+      last.setTime(todayDate.getTime());
+    }
     const start = new Date(first);
     // Align to Sunday
     start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
@@ -37,6 +44,8 @@ const ContributionGrid = ({ contributions }: ContributionGridProps) => {
       const col: GitHubContribution[] = [];
       for (let i = 0; i < 7; i++) {
         const iso = cursor.toISOString().slice(0, 10);
+        // Lewati hari di masa depan → kolom terakhir berhenti di hari ini.
+        if (iso > today) break;
         col.push(byDate.get(iso) ?? { date: iso, count: 0, level: 0 });
         cursor.setDate(cursor.getDate() + 1);
       }

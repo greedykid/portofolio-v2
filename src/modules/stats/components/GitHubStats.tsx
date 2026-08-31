@@ -29,9 +29,11 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
   const { user, repos, totalStars } = stats;
 
   // API mengembalikan beberapa tahun data; grid hanya menampilkan tahun berjalan
+  // dan hanya sampai tanggal hari ini (jangan tampilkan bulan/kotak di masa depan).
   const year = new Date().getFullYear();
-  const yearContributions = stats.contributions.filter((c) =>
-    c.date.startsWith(`${year}`),
+  const today = new Date().toISOString().slice(0, 10);
+  const yearContributions = stats.contributions.filter(
+    (c) => c.date.startsWith(`${year}`) && c.date <= today,
   );
   const yearTotal = yearContributions.reduce((sum, c) => sum + c.count, 0);
 
