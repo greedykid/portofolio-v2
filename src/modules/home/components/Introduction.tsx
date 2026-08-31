@@ -1,4 +1,6 @@
 import { PROFILE, STATS } from '@/common/constant/data';
+import Link from 'next/link';
+import { FiDownload } from 'react-icons/fi';
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import Card from '@/common/components/elements/Card';
 
@@ -16,6 +18,14 @@ const Introduction = () => {
           </li>
           <li>{PROFILE.availability.split('(')[1]?.replace(')', '') || 'Available for work'}</li>
         </ul>
+        <Link
+          href={PROFILE.resumeUrl}
+          download
+          className="inline-flex w-fit items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+        >
+          <FiDownload size={16} />
+          Download CV
+        </Link>
       </div>
 
       <p className="leading-[1.8] text-neutral-800 dark:text-neutral-300 md:leading-loose">

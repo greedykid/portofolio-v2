@@ -5,6 +5,7 @@ import { FiArrowLeft } from 'react-icons/fi';
 
 import Container from '@/common/components/elements/Container';
 import { getAllPosts, getPostBySlug } from '@/common/libs/blog';
+import { SITE_NAME, SITE_URL } from '@/common/constant/app';
 
 interface BlogDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -14,8 +15,6 @@ export async function generateStaticParams() {
   const posts = await getAllPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
-
-const SITE_URL = 'https://rizkiarbiansyah.vercel.app';
 
 export async function generateMetadata({
   params,
@@ -34,7 +33,7 @@ export async function generateMetadata({
       type: 'article',
       locale: 'id_ID',
       url: pageUrl,
-      siteName: 'Rizki Arbiansyah Portfolio',
+      siteName: SITE_NAME,
       title: post.title,
       description: post.description,
       images: [
@@ -78,6 +77,19 @@ const BlogDetailPage = async ({ params }: BlogDetailPageProps) => {
           <FiArrowLeft size={16} />
           Kembali ke Wawasan
         </Link>
+
+        {post.coverImage ? (
+          <div className="overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-900">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={post.coverImage}
+              alt={post.title}
+              className="h-64 w-full object-cover"
+            />
+          </div>
+        ) : (
+          <div className="h-48 overflow-hidden rounded-2xl border border-neutral-200 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 dark:border-neutral-900" />
+        )}
 
         <div className="space-y-3">
           <div className="flex flex-wrap gap-2">

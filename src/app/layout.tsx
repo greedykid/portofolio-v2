@@ -4,9 +4,8 @@ import { Analytics } from '@vercel/analytics/react';
 
 import Layout from '@/common/components/layouts';
 import { ThemeProvider } from '@/common/context/ThemeContext';
+import { AUTHOR_NAME, SITE_NAME, SITE_URL } from '@/common/constant/app';
 import './globals.css';
-
-const SITE_URL = 'https://rizkiarbiansyah.vercel.app';
 
 const jakartaSans = Plus_Jakarta_Sans({
   variable: '--jakartaSans-font',
@@ -39,8 +38,8 @@ export const metadata: Metadata = {
     'Universitas Gunadarma',
     'Portofolio',
   ],
-  authors: [{ name: 'Rizki Arbiansyah', url: SITE_URL }],
-  creator: 'Rizki Arbiansyah',
+  authors: [{ name: AUTHOR_NAME, url: SITE_URL }],
+  creator: AUTHOR_NAME,
   alternates: {
     canonical: SITE_URL,
   },
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'id_ID',
     url: SITE_URL,
-    siteName: 'Rizki Arbiansyah Portfolio',
+    siteName: SITE_NAME,
     title: 'Rizki Arbiansyah | Web Developer & IT Support',
     description:
       'Portofolio Rizki Arbiansyah - Web Development, IT Support, dan Proyek Sistem Informasi.',
@@ -87,6 +86,21 @@ try {
 }
 `;
 
+// Structured data untuk SEO: Personal Knowledge Panel di Google
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: AUTHOR_NAME,
+  url: SITE_URL,
+  jobTitle: 'Web Developer & IT Support',
+  description:
+    'Lulusan S1 Sistem Informasi Universitas Gunadarma dengan keahlian Web Development (Laravel, MySQL, Tailwind CSS) dan IT Support & Networking.',
+  sameAs: [
+    'https://github.com/greedykid',
+    'https://linkedin.com/in/rizkiarbiansyah',
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -97,6 +111,10 @@ export default function RootLayout({
       <body
         className={`${jakartaSans.variable} ${firaCode.variable} font-sans`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <ThemeProvider>
           <Layout>{children}</Layout>

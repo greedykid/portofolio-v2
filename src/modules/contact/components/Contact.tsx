@@ -5,6 +5,8 @@ import { PROFILE, SOCIAL_MEDIA } from '@/common/constant/data';
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import Card from '@/common/components/elements/Card';
 
+import ContactForm from './ContactForm';
+
 const CONTACT_ITEMS = [
   { label: 'Email', href: SOCIAL_MEDIA.email, icon: <FiMail size={20} /> },
   { label: 'GitHub', href: SOCIAL_MEDIA.github, icon: <FiGithub size={20} /> },
@@ -30,7 +32,7 @@ const Contact = () => {
         <p className="leading-[1.8] text-neutral-800 dark:text-neutral-300 md:leading-loose">
           {PROFILE.availability}
         </p>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           {CONTACT_ITEMS.map((item, index) => (
             <Link
               key={index}
@@ -45,6 +47,10 @@ const Contact = () => {
               </span>
             </Link>
           ))}
+        </div>
+
+        <div className="border-t border-neutral-200 pt-6 dark:border-neutral-800">
+          <ContactForm />
         </div>
       </Card>
     </section>

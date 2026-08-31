@@ -15,6 +15,7 @@ export interface BlogPostMeta {
   featured: boolean;
   slug: string;
   readingTime: string;
+  coverImage?: string;
 }
 
 export interface BlogPost extends BlogPostMeta {
@@ -41,6 +42,7 @@ function parseFrontmatter(raw: string, slug: string) {
     featured: Boolean(data.featured),
     slug,
     readingTime: calculateReadingTime(content),
+    coverImage: data.coverImage ?? undefined,
   };
   return { meta, content };
 }

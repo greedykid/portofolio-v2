@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
-import { getPostBySlug } from '@/common/libs/blog';
 import { SITE_URL } from '@/common/constant/app';
+import { getProjectBySlug } from '@/common/libs/projects';
 
 export const size = {
   width: 1200,
@@ -16,8 +16,8 @@ interface OgImageProps {
 
 export default async function OgImage({ params }: OgImageProps) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
-  if (!post) return new ImageResponse(<div>Not Found</div>, size);
+  const project = getProjectBySlug(slug);
+  if (!project) return new ImageResponse(<div>Not Found</div>, size);
 
   return new ImageResponse(
     (
@@ -44,50 +44,49 @@ export default async function OgImage({ params }: OgImageProps) {
         >
           <div
             style={{
+              fontSize: 26,
+              fontWeight: 700,
+              color: '#a5b4fc',
               display: 'flex',
               gap: 12,
             }}
           >
-            {post.tags.slice(0, 3).map((tag) => (
+            {project.stacks.slice(0, 4).map((stack) => (
               <span
-                key={tag}
+                key={stack}
                 style={{
-                  fontSize: 22,
-                  color: '#c7d2fe',
                   border: '2px solid #6366f1',
                   borderRadius: 999,
                   padding: '6px 18px',
                   display: 'flex',
                 }}
               >
-                {tag}
+                {stack}
               </span>
             ))}
           </div>
           <div
             style={{
-              fontSize: 52,
+              fontSize: 58,
               fontWeight: 800,
               lineHeight: 1.15,
               display: 'flex',
               maxWidth: 900,
             }}
           >
-            {post.title}
+            {project.title}
           </div>
-          {post.description ? (
-            <div
-              style={{
-                fontSize: 26,
-                color: '#a5b4fc',
-                lineHeight: 1.4,
-                display: 'flex',
-                maxWidth: 880,
-              }}
-            >
-              {post.description}
-            </div>
-          ) : null}
+          <div
+            style={{
+              fontSize: 27,
+              color: '#c7d2fe',
+              lineHeight: 1.4,
+              display: 'flex',
+              maxWidth: 880,
+            }}
+          >
+            {project.description}
+          </div>
         </div>
 
         <div
@@ -102,11 +101,9 @@ export default async function OgImage({ params }: OgImageProps) {
               fontSize: 26,
               fontWeight: 700,
               display: 'flex',
-              alignItems: 'center',
-              gap: 12,
             }}
           >
-            <span>Rizki Arbiansyah</span>
+            Rizki Arbiansyah
           </div>
           <div
             style={{

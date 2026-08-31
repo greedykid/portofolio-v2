@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
 
 import { getAllPosts } from '@/common/libs/blog';
-
-const SITE_URL = 'https://portofolio-phi-ten-82.vercel.app';
+import { PROJECTS } from '@/common/constant/data';
+import { SITE_URL } from '@/common/constant/app';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts();
@@ -29,5 +29,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...blogRoutes];
+  const projectRoutes: MetadataRoute.Sitemap = PROJECTS.map((project) => ({
+    url: `${SITE_URL}/projects/${project.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...blogRoutes, ...projectRoutes];
 }

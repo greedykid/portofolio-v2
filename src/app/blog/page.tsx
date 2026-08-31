@@ -4,8 +4,7 @@ import Container from '@/common/components/elements/Container';
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import { getAllPosts } from '@/common/libs/blog';
 import BlogCard from '@/modules/blog/components/BlogCard';
-
-const SITE_URL = 'https://rizkiarbiansyah.vercel.app';
+import { SITE_NAME, SITE_URL } from '@/common/constant/app';
 
 export const metadata: Metadata = {
   title: 'Wawasan',
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'id_ID',
     url: `${SITE_URL}/blog`,
-    siteName: 'Rizki Arbiansyah Portfolio',
+    siteName: SITE_NAME,
     title: 'Wawasan | Rizki Arbiansyah',
     description:
       'Artikel dan catatan Rizki Arbiansyah seputar pengembangan web, database, dan dunia IT.',

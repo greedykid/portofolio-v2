@@ -140,6 +140,8 @@ export const PROJECTS = [
     is_featured: true,
     demoUrl: 'https://gegares.shop',
     githubUrl: 'https://github.com/greedykid',
+    detail:
+      'GEGARES adalah platform e-commerce yang dibangun penuh sebagai luaran Penulisan Ilmiah tingkat sarjana. Aplikasi ini memungkinkan penjualan produk kuliner tradisional secara online dengan alur belanja lengkap mulai dari katalog, keranjang, hingga checkout.\n\nDibangun menggunakan arsitektur MVC Laravel 12 dengan database relasional MySQL, serta UI modern responsif berbasis Tailwind CSS. Seluruh perancangan sistem didokumentasikan lengkap melalui Use Case, Activity, Sequence Diagram, dan ERD.',
   },
   {
     id: 'berkah-mulia',
@@ -151,6 +153,8 @@ export const PROJECTS = [
     is_featured: true,
     demoUrl: 'https://bmberkahmulia.com',
     githubUrl: 'https://github.com/greedykid/berkahmulia',
+    detail:
+      'Katalog Digital Berkah Mulia adalah website katalog yang sudah live dan aktif digunakan untuk menampilkan produk pakaian bayi & anak. Dibangun dengan Laravel dan MySQL, dilengkapi klasifikasi kategori bertingkat agar pencarian produk lebih mudah.\n\nFokus pada performa loading yang cepat, efisiensi aset, serta UI/UX yang responsif di berbagai perangkat. Kode dikelola dengan version control di GitHub.',
   },
 ];
 
