@@ -37,6 +37,7 @@ export interface GitHubStats {
 }
 
 const GITHUB_USER = 'greedykid';
+export const GITHUB_USERNAME = GITHUB_USER;
 const API = 'https://api.github.com';
 const CONTRIB_API = 'https://github-contributions-api.jogruber.de/v4';
 
@@ -53,36 +54,92 @@ function headers(): HeadersInit {
   return headers;
 }
 
-export async function getGithubStats(): Promise<GitHubStats> {
+const fetchWithTimeout = async (url: string, init?: RequestInit) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
   try {
-    const [userRes, reposRes, contribRes] = await Promise.all([
-      fetch(`${API}/users/${GITHUB_USER}`, {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
+export async function getGithubStats(): Promise<GitHubStats> {
+  // Default: tampilkan kartu "tidak tersedia" hanya jika SEMUA gagal.
+  const fallback: GitHubStats = {
+    user: null,
+    repos: [],
+    totalStars: 0,
+    contributions: [],
+    totalContributions: 0,
+    error: true,
+  };
+
+  try {
+    const [userRes, reposRes, contribRes] = await Promise.allSettled([
+      fetchWithTimeout(`${API}/users/${GITHUB_USER}`, {
         headers: headers(),
         next: { revalidate: 300 },
       }),
-      fetch(`${API}/users/${GITHUB_USER}/repos?per_page=100&sort=updated`, {
+      fetchWithTimeout(`${API}/users/${GITHUB_USER}/repos?per_page=100&sort=updated`, {
         headers: headers(),
         next: { revalidate: 300 },
       }),
-      fetch(`${CONTRIB_API}/${GITHUB_USER}`, {
+      fetchWithTimeout(`${CONTRIB_API}/${GITHUB_USER}`, {
         next: { revalidate: 300 },
       }),
     ]);
 
-    if (!userRes.ok || !reposRes.ok) {
-      console.error('GitHub API error', userRes.status, reposRes.status);
+    // Parse kontribusi terpisah & tahan banting berapa pun hasil request lain
+    let contributions: GitHubContribution[] = [];
+    let totalContributions = 0;
+    if (contribRes.status === 'fulfilled' && contribRes.value.ok) {
+      try {
+        const contribData = await contribRes.value.json();
+        contributions = (contribData.contributions ?? []).map(
+          (c: Record<string, unknown>) => ({
+            date: c.date as string,
+            count: c.count as number,
+            level: c.level as number,
+          }),
+        );
+        const total = contribData.total as Record<string, number> | undefined;
+        if (total) {
+          totalContributions = Object.values(total).reduce(
+            (sum, n) => sum + (n ?? 0),
+            0,
+          );
+        } else {
+          totalContributions = contributions.reduce(
+            (sum, c) => sum + c.count,
+            0,
+          );
+        }
+      } catch {
+        // data kontribusi rusak → anggap kosong
+      }
+    }
+
+    if (userRes.status !== 'fulfilled' || reposRes.status !== 'fulfilled') {
+      console.error('GitHub API error (user/repos)', userRes.status, reposRes.status);
       return {
-        user: null,
-        repos: [],
-        totalStars: 0,
-        contributions: [],
-        totalContributions: 0,
-        error: true,
+        ...fallback,
+        contributions,
+        totalContributions,
       };
     }
 
-    const userData = await userRes.json();
-    const reposData = await reposRes.json();
+    if (!userRes.value.ok || !reposRes.value.ok) {
+      console.error('GitHub API error', userRes.value.status, reposRes.value.status);
+      return {
+        ...fallback,
+        contributions,
+        totalContributions,
+      };
+    }
+
+    const userData = await userRes.value.json();
+    const reposData = await reposRes.value.json();
 
     const repos: GitHubRepo[] = reposData.map((r: Record<string, unknown>) => ({
       id: r.id as number,
@@ -99,31 +156,6 @@ export async function getGithubStats(): Promise<GitHubStats> {
       (sum, repo) => sum + repo.stargazersCount,
       0,
     );
-
-    let contributions: GitHubContribution[] = [];
-    let totalContributions = 0;
-    if (contribRes.ok) {
-      const contribData = await contribRes.json();
-      contributions = (contribData.contributions ?? []).map(
-        (c: Record<string, unknown>) => ({
-          date: c.date as string,
-          count: c.count as number,
-          level: c.level as number,
-        }),
-      );
-      const total = contribData.total as Record<string, number> | undefined;
-      if (total) {
-        totalContributions = Object.values(total).reduce(
-          (sum, n) => sum + (n ?? 0),
-          0,
-        );
-      } else {
-        totalContributions = contributions.reduce(
-          (sum, c) => sum + c.count,
-          0,
-        );
-      }
-    }
 
     const user: GitHubUser = {
       login: userData.login,
@@ -147,13 +179,6 @@ export async function getGithubStats(): Promise<GitHubStats> {
     };
   } catch (err) {
     console.error('GitHub fetch failed', err);
-    return {
-      user: null,
-      repos: [],
-      totalStars: 0,
-      contributions: [],
-      totalContributions: 0,
-      error: true,
-    };
+    return fallback;
   }
 }

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 import Card from '@/common/components/elements/Card';
-import { GitHubStats as GitHubStatsData } from '@/common/libs/github';
+import { GitHubStats as GitHubStatsData, GITHUB_USERNAME } from '@/common/libs/github';
 
 import ContributionGrid from './ContributionGrid';
 
@@ -34,7 +34,7 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
   );
   const yearTotal = yearContributions.reduce((sum, c) => sum + c.count, 0);
 
-  if (!user) {
+  if (!user && stats.contributions.length === 0) {
     return (
       <Card className="rounded-xl border border-neutral-200 p-6 text-center dark:border-neutral-900">
         <div className="space-y-2">
@@ -66,8 +66,8 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
       <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={user.avatarUrl}
-          alt={user.name ?? user.login}
+          src={user?.avatarUrl ?? '/images/profile.svg'}
+          alt={user?.name ?? user?.login ?? GITHUB_USERNAME}
           width={96}
           height={96}
           className="h-24 w-24 rounded-full border-2 border-neutral-200 dark:border-neutral-700"
@@ -75,30 +75,30 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <h3 className="text-xl font-bold text-neutral-800 dark:text-neutral-100">
-              {user.name}
+              {user?.name ?? GITHUB_USERNAME}
             </h3>
             <FiGithub size={18} className="text-neutral-400" />
           </div>
           <a
-            href={user.htmlUrl}
+            href={user?.htmlUrl ?? `https://github.com/${GITHUB_USERNAME}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-neutral-500 transition hover:text-teal-600 dark:text-neutral-400 dark:hover:text-teal-400"
           >
-            @{user.login}
+            @{user?.login ?? GITHUB_USERNAME}
           </a>
           <div className="flex flex-wrap gap-4 pt-1">
             <div className="flex items-center gap-1.5 text-sm">
               <FiUsers size={16} className="text-neutral-400" />
               <span className="font-semibold text-neutral-800 dark:text-neutral-100">
-                {user.followers}
+                {user?.followers ?? 0}
               </span>
               <span className="text-neutral-500">Followers</span>
             </div>
             <div className="flex items-center gap-1.5 text-sm">
               <FiFolder size={16} className="text-neutral-400" />
               <span className="font-semibold text-neutral-800 dark:text-neutral-100">
-                {user.publicRepos}
+                {user?.publicRepos ?? 0}
               </span>
               <span className="text-neutral-500">Repos</span>
             </div>
@@ -162,7 +162,7 @@ const GitHubStats = ({ stats }: GitHubStatsProps) => {
                 </h4>
                 <div className="flex flex-1 items-center justify-center">
                   <img
-                    src={`https://github-readme-streak-stats.herokuapp.com/?user=${user.login}&background=0e0e0e&ring=2dd4bf&fire=2dd4bf&currStreakNum=ffffff&sideNums=94a3b8&currStreakLabel=2dd4bf&sideLabels=94a3b8&dates=94a3b8`}
+                    src={`https://github-readme-streak-stats.herokuapp.com/?user=${user?.login ?? GITHUB_USERNAME}&background=0e0e0e&ring=2dd4bf&fire=2dd4bf&currStreakNum=ffffff&sideNums=94a3b8&currStreakLabel=2dd4bf&sideLabels=94a3b8&dates=94a3b8`}
                     alt="GitHub streak stats"
                     loading="lazy"
                     className="w-full max-w-full"
