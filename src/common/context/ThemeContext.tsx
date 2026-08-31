@@ -1,6 +1,12 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { flushSync } from 'react-dom';
+
+// View Transitions API belum ada di type lib DOM versi ini
+interface DocumentWithViewTransition extends Document {
+  startViewTransition?: (callback: () => void) => unknown;
+}
 
 interface ThemeContextValue {
   theme: 'dark' | 'light';
@@ -16,21 +22,29 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const saved = localStorage.getItem('portfolio-theme');
-    if (saved === 'light' || saved === 'dark') {
-      setTheme(saved);
-    }
+    const next = saved === 'light' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.setAttribute('class', next);
+    localStorage.setItem('portfolio-theme', next);
     setHydrated(true);
   }, []);
 
-  useEffect(() => {
-    // Jangan timpa class sebelum localStorage terbaca, agar tidak flash mode gelap di mode terang
-    if (!hydrated) return;
-    document.documentElement.setAttribute('class', theme);
-    localStorage.setItem('portfolio-theme', theme);
-  }, [theme, hydrated]);
-
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    const next = theme === 'dark' ? 'light' : 'dark';
+    const apply = () =>
+      flushSync(() => {
+        document.documentElement.setAttribute('class', next);
+        localStorage.setItem('portfolio-theme', next);
+        setTheme(next);
+      });
+
+    // View Transitions API: cross-fade satu frame penuh yang mulus di mobile
+    const doc = document as DocumentWithViewTransition;
+    if (typeof doc !== 'undefined' && doc.startViewTransition) {
+      doc.startViewTransition(apply);
+    } else {
+      apply();
+    }
   };
 
   return (

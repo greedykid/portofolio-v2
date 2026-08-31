@@ -13,21 +13,16 @@ html {
   transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-/* Transisi warna global agar pergantian tema lebih smooth */
-*,
-::before,
-::after {
-  transition:
-    background-color 0.35s ease,
-    border-color 0.35s ease,
-    color 0.35s ease;
+/* Pergantian tema: pakai View Transitions API (cross-fade smooth di mobile) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.45s;
+  animation-timing-function: ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    transition: none !important;
+  html {
+    scroll-behavior: auto;
   }
 }
 
