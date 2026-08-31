@@ -49,8 +49,10 @@ const Education = () => {
               key={index}
               className="space-y-1 p-5 border border-neutral-200 dark:border-neutral-900"
             >
-              <div className="flex items-center gap-2 text-lg font-medium text-neutral-800 dark:text-neutral-200">
-                <FiAward size={20} className="text-teal-600 dark:text-teal-400" />
+              <div className="flex items-center gap-3 text-lg font-medium text-neutral-800 dark:text-neutral-200">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded bg-neutral-50 text-teal-600 dark:bg-neutral-800 dark:text-teal-400">
+                  <FiAward size={18} />
+                </div>
                 {cert.title}
               </div>
               <div className="text-sm text-neutral-500 dark:text-neutral-400">
