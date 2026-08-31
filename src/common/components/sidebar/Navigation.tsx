@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { FiHome, FiUser, FiFolder, FiMail, FiBookOpen } from 'react-icons/fi';
 
@@ -24,30 +24,6 @@ const isHomePage = (pathname: string) => pathname === '/';
 const Navigation = () => {
   const pathname = usePathname();
   const [activeId, setActiveId] = useState<string>('home');
-
-  // Scroll-spy: saat di halaman home, deteksi section yang sedang terlihat
-  useEffect(() => {
-    if (!isHomePage(pathname)) return;
-
-    const sectionIds = NAV_ITEMS.map((item) => item.id);
-    const sections = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-
-    const onScroll = () => {
-      const offset = window.scrollY + 120;
-      let current = 'home';
-      for (const section of sections) {
-        if (section.offsetTop <= offset) current = section.id;
-      }
-      setActiveId(current);
-    };
-
-    // Jangan panggil onScroll() saat mount: default harus Home,
-    // hanya berubah saat user scroll/klik (hindari scroll-restore ke Contact).
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [pathname]);
 
   // Saat pindah halaman/blog, reset aktif ke item bersangkutan
   const isBlogPage = pathname === '/blog' || pathname.startsWith('/blog/');
