@@ -43,7 +43,8 @@ const Navigation = () => {
       setActiveId(current);
     };
 
-    onScroll();
+    // Jangan panggil onScroll() saat mount: default harus Home,
+    // hanya berubah saat user scroll/klik (hindari scroll-restore ke Contact).
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, [pathname]);
